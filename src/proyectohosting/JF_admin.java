@@ -27,6 +27,7 @@ public class JF_admin extends javax.swing.JFrame {
     public JF_admin() {
         initComponents();
         actualizarTablaClientes("");
+        actualizarTablaDominios("");
         cargaUsuario();
         
     }
@@ -57,6 +58,33 @@ public final void actualizarTablaClientes(String valor){
             JOptionPane.showMessageDialog(null, ex);
         }
     }
+public final void actualizarTablaDominios(String valor){
+        DefaultTableModel modelo = (DefaultTableModel) JTdominios.getModel();
+        String sql;
+        String[] registro = new String[5];
+        
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+        sql = "SELECT propietario, dominio, fechaAlta, fechaBaja FROM dominios "
+                + "WHERE CONCAT (propietario, ' ', dominio, ' ', fechaAlta, ' ', fechaBaja) LIKE '%"+valor+"%'";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+                registro[0] = rs.getString("dominio");
+                registro[1] = "5";
+                registro[2] = rs.getString("fechaAlta");
+                registro[3] = rs.getString("fechaBaja");
+                registro[4] = rs.getString("propietario");
+                
+                modelo.addRow(registro);
+            }
+            JTdominios.setModel(modelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
 
 private void cargaUsuario() {
         try{
@@ -68,7 +96,7 @@ private void cargaUsuario() {
         
         while( rs.next()){
             String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidos");
-            this.JCpropietario.addItem(nombreCompleto);
+            this.JCpropietarioDominio.addItem(nombreCompleto);
         }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -103,11 +131,11 @@ private void cargaUsuario() {
         JBalta_cliente = new javax.swing.JButton();
         JPdominios = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        JTdominios = new javax.swing.JTable();
         paneldominio = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        JTdominio = new javax.swing.JTextField();
-        JCpropietario = new javax.swing.JComboBox();
+        JTdominioDominio = new javax.swing.JTextField();
+        JCpropietarioDominio = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         JBaltaDominio = new javax.swing.JButton();
         JBbajaDominio = new javax.swing.JButton();
@@ -241,7 +269,7 @@ private void cargaUsuario() {
 
         jTabbedPane1.addTab("Clientes", JPclientes);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        JTdominios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -249,23 +277,23 @@ private void cargaUsuario() {
                 "Dominio", "Precio", "Fecha de alta", "Fecha de baja", "Propietario"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(1).setMaxWidth(50);
-            jTable2.getColumnModel().getColumn(4).setMinWidth(200);
+        jScrollPane2.setViewportView(JTdominios);
+        if (JTdominios.getColumnModel().getColumnCount() > 0) {
+            JTdominios.getColumnModel().getColumn(1).setMaxWidth(50);
+            JTdominios.getColumnModel().getColumn(4).setMinWidth(200);
         }
 
         jLabel5.setText("Dominio:");
 
-        JTdominio.addActionListener(new java.awt.event.ActionListener() {
+        JTdominioDominio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JTdominioActionPerformed(evt);
+                JTdominioDominioActionPerformed(evt);
             }
         });
 
-        JCpropietario.addActionListener(new java.awt.event.ActionListener() {
+        JCpropietarioDominio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JCpropietarioActionPerformed(evt);
+                JCpropietarioDominioActionPerformed(evt);
             }
         });
 
@@ -282,8 +310,8 @@ private void cargaUsuario() {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JTdominio)
-                    .addComponent(JCpropietario, 0, 183, Short.MAX_VALUE))
+                    .addComponent(JTdominioDominio)
+                    .addComponent(JCpropietarioDominio, 0, 183, Short.MAX_VALUE))
                 .addGap(0, 162, Short.MAX_VALUE))
         );
         paneldominioLayout.setVerticalGroup(
@@ -291,12 +319,12 @@ private void cargaUsuario() {
             .addGroup(paneldominioLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JTdominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JTdominioDominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(14, 14, 14)
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(JCpropietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JCpropietarioDominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -431,6 +459,7 @@ private void cargaUsuario() {
     }//GEN-LAST:event_JBbaja_clienteActionPerformed
 
     private void JBalta_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBalta_clienteActionPerformed
+        //ALTA CLIENTES
         Conectar mysql = new Conectar();
         Connection cn = mysql.conexSQL();
         Date fechaActual = new Date();
@@ -466,53 +495,50 @@ private void cargaUsuario() {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-
     }//GEN-LAST:event_JBalta_clienteActionPerformed
 
-    private void JTdominioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTdominioActionPerformed
+    private void JTdominioDominioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTdominioDominioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JTdominioActionPerformed
+    }//GEN-LAST:event_JTdominioDominioActionPerformed
 
-    private void JCpropietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCpropietarioActionPerformed
+    private void JCpropietarioDominioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCpropietarioDominioActionPerformed
       
-    }//GEN-LAST:event_JCpropietarioActionPerformed
+    }//GEN-LAST:event_JCpropietarioDominioActionPerformed
 
     private void JBaltaDominioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBaltaDominioActionPerformed
+        //ALTA DOMINIOS
         Conectar mysql = new Conectar();
         Connection cn = mysql.conexSQL();
         Date fechaActual = new Date();
         String fechaActualFormat = new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
 
-        String nombre, apellidos, correo, DNI, fechaAlta;
-        nombre = JTnombreCliente.getText();
-        apellidos = JTapellidosCliente.getText();
-        correo = JTcorreoCliente.getText();
-        DNI = JTdniCliente.getText();
+        String propietario, dominio, fechaAlta, fechaBaja;
+        propietario = JCpropietarioDominio.getSelectedItem().toString();
+        dominio = JTdominioDominio.getText();
         fechaAlta = fechaActualFormat;
+        fechaBaja = fechaActualFormat;
+        
 
-        String sql = "INSERT INTO clientes (nombre, apellidos, correo, DNI, fechaAlta) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO dominios (propietario, dominio, fechaAlta, fechaBaja) VALUES (?,?,?,?)";
         try {
             PreparedStatement pst = cn.prepareStatement(sql);
-            pst.setString(1, nombre);
-            pst.setString(2, apellidos);
-            pst.setString(3, correo);
-            pst.setString(4, DNI);
-            pst.setString(5, fechaAlta);
+            pst.setString(1, propietario);
+            pst.setString(2, dominio);
+            pst.setString(3, fechaAlta);
+            pst.setString(4, fechaBaja);
+            
 
             int n = pst.executeUpdate();
 
             //actualiza la tabla en el momento de añadir un nuevo participante
-            ((DefaultTableModel)JTclientes.getModel()).setRowCount(0);
-            actualizarTablaClientes("");
-            JTnombreCliente.setText("");
-            JTapellidosCliente.setText("");
-            JTdniCliente.setText("");
-            JTcorreoCliente.setText("");
+            ((DefaultTableModel)JTdominios.getModel()).setRowCount(0);
+            actualizarTablaDominios("");
             
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
+        
     }//GEN-LAST:event_JBaltaDominioActionPerformed
 
     /**
@@ -556,7 +582,7 @@ private void cargaUsuario() {
     private javax.swing.JButton JBalta_cliente;
     private javax.swing.JButton JBbajaDominio;
     private javax.swing.JButton JBbaja_cliente;
-    private javax.swing.JComboBox JCpropietario;
+    private javax.swing.JComboBox JCpropietarioDominio;
     private javax.swing.JLabel JLpaneldeadministracion;
     private javax.swing.JPanel JPclientes;
     private javax.swing.JPanel JPdominios;
@@ -565,7 +591,8 @@ private void cargaUsuario() {
     private javax.swing.JTable JTclientes;
     private javax.swing.JTextField JTcorreoCliente;
     private javax.swing.JTextField JTdniCliente;
-    private javax.swing.JTextField JTdominio;
+    private javax.swing.JTextField JTdominioDominio;
+    private javax.swing.JTable JTdominios;
     private javax.swing.JTextField JTnombreCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -578,7 +605,6 @@ private void cargaUsuario() {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JPanel paneldominio;
     // End of variables declaration//GEN-END:variables
