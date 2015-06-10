@@ -5,6 +5,12 @@
  */
 package proyectohosting;
 
+import java.awt.Component;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Zarza
@@ -41,6 +47,11 @@ public class JF_login extends javax.swing.JFrame {
         JLcorreo.setText("Correo:");
 
         JBlogin.setText("Login");
+        JBlogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBloginActionPerformed(evt);
+            }
+        });
 
         JRcontraseña.setText("Contraseña:");
 
@@ -95,11 +106,10 @@ public class JF_login extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(JPcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(JPcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(91, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -125,6 +135,42 @@ public class JF_login extends javax.swing.JFrame {
           this.dispose();
           new JF_buscador().setVisible(true);
     }//GEN-LAST:event_JBbuscadorActionPerformed
+
+    private void JBloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBloginActionPerformed
+       String correo = JTcorreo.getText();
+       String password = JTcontraseña.getText();
+       String passwordBD="";
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+        String sql = "SELECT correo, password, admin FROM clientes WHERE correo LIKE '%"+correo+"%'";
+        
+        try{  
+            
+           
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while(rs.next()){
+            passwordBD = rs.getString("password");
+                                  
+            }
+           
+           JOptionPane pane = new JOptionPane();
+           
+           if (password.equals(passwordBD)){
+               JOptionPane.showMessageDialog(pane,"Correcto");
+           }else{
+               JOptionPane.showMessageDialog(pane,"Incorrecto");
+           }
+
+
+            
+        
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+            System.out.println("falla");
+        }
+    }//GEN-LAST:event_JBloginActionPerformed
 
     /**
      * @param args the command line arguments
