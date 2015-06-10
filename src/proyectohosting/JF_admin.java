@@ -28,7 +28,7 @@ public class JF_admin extends javax.swing.JFrame {
         initComponents();
         actualizarTablaClientes("");
         actualizarTablaDominios("");
-        cargaUsuario();
+        cargaPropietario();
         
     }
 public final void actualizarTablaClientes(String valor){
@@ -86,13 +86,13 @@ public final void actualizarTablaDominios(String valor){
         }
     }
 
-private void cargaUsuario() {
+private void cargaPropietario() {
         try{
         Conectar mysql = new Conectar();
         Connection cn = mysql.conexSQL();
         Statement sent = cn.createStatement();
         ResultSet rs = sent.executeQuery("SELECT nombre, apellidos FROM clientes");
-        
+        this.JCpropietarioDominio.removeAllItems();
         
         while( rs.next()){
             String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidos");
@@ -451,7 +451,7 @@ private void cargaUsuario() {
             //actualiza la tabla en el momento de añadir un nuevo participante
             ((DefaultTableModel)JTclientes.getModel()).setRowCount(0);
             actualizarTablaClientes("");
-
+            cargaPropietario();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -490,7 +490,7 @@ private void cargaUsuario() {
             JTapellidosCliente.setText("");
             JTdniCliente.setText("");
             JTcorreoCliente.setText("");
-            
+            cargaPropietario();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -533,6 +533,7 @@ private void cargaUsuario() {
             //actualiza la tabla en el momento de añadir un nuevo participante
             ((DefaultTableModel)JTdominios.getModel()).setRowCount(0);
             actualizarTablaDominios("");
+           
             
 
         } catch (SQLException ex) {
