@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -82,7 +83,7 @@ public final void actualizarTablaDominios(String valor){
                     break;
                 case "com": extensionPrecio="9";
                     break;
-                case ".org": extensionPrecio="11";
+                case "org": extensionPrecio="11";
                     break;
                 case "net": extensionPrecio="13";
                     break;                    
@@ -525,14 +526,22 @@ private void cargaPropietario() {
         //ALTA DOMINIOS
         Conectar mysql = new Conectar();
         Connection cn = mysql.conexSQL();
-        Date fechaActual = new Date();
-        String fechaActualFormat = new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
+       
+        Calendar cal = Calendar.getInstance();
+        Date hoy = cal.getTime();
+        cal.add(Calendar.YEAR,1); //suma un año a la fecha
+        Date fechaCaducidad = cal.getTime();
+      
+        
+        String fechaActualFormat = new SimpleDateFormat("yyyy-MM-dd").format(hoy);
+        String fechaCaducidadFormat = new SimpleDateFormat("yyyy-MM-dd").format(fechaCaducidad);
+        
 
         String propietario, dominio, fechaAlta, fechaBaja;
         propietario = JCpropietarioDominio.getSelectedItem().toString();
         dominio = JTdominioDominio.getText();
         fechaAlta = fechaActualFormat;
-        fechaBaja = fechaActualFormat;
+        fechaBaja = fechaCaducidadFormat;
         
 
         String sql = "INSERT INTO dominios (propietario, dominio, fechaAlta, fechaBaja) VALUES (?,?,?,?)";
