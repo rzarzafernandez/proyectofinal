@@ -163,6 +163,7 @@ private void cargaPropietario() {
         JPhostings = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        JBdesconectar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -461,6 +462,13 @@ private void cargaPropietario() {
 
         jTabbedPane1.addTab("Hostings", JPhostings);
 
+        JBdesconectar.setText("Desconectar");
+        JBdesconectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBdesconectarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -472,12 +480,16 @@ private void cargaPropietario() {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(JLpaneldeadministracion, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(236, 236, 236))
+                .addGap(90, 90, 90)
+                .addComponent(JBdesconectar)
+                .addGap(73, 73, 73))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(JLpaneldeadministracion, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JLpaneldeadministracion, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBdesconectar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -644,6 +656,11 @@ private void cargaPropietario() {
         JTpasswordCliente.setText(passwordAleatoria);
     }//GEN-LAST:event_JBgenerarPasswordActionPerformed
 
+    private void JBdesconectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBdesconectarActionPerformed
+        this.dispose();
+        new JF_login().setVisible(true);
+    }//GEN-LAST:event_JBdesconectarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -685,6 +702,7 @@ private void cargaPropietario() {
     private javax.swing.JButton JBalta_cliente;
     private javax.swing.JButton JBbajaDominio;
     private javax.swing.JButton JBbaja_cliente;
+    private javax.swing.JButton JBdesconectar;
     private javax.swing.JButton JBgenerarPassword;
     private javax.swing.JCheckBox JCHpermisosCliente;
     private javax.swing.JComboBox JCpropietarioDominio;
