@@ -71,9 +71,25 @@ public final void actualizarTablaDominios(String valor){
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             
+            
+            //asigna un precio según la extensión del dominio
             while(rs.next()){
+                String dominio = rs.getString("dominio");
+            String extension = dominio.substring(dominio.length()-3);
+            String  extensionPrecio="";
+            switch (extension){
+                case ".es": extensionPrecio="7";
+                    break;
+                case "com": extensionPrecio="9";
+                    break;
+                case ".org": extensionPrecio="11";
+                    break;
+                case "net": extensionPrecio="13";
+                    break;                    
+            }
+                
                 registro[0] = rs.getString("dominio");
-                registro[1] = "5";
+                registro[1] = extensionPrecio;
                 registro[2] = rs.getString("fechaAlta");
                 registro[3] = rs.getString("fechaBaja");
                 registro[4] = rs.getString("propietario");
