@@ -146,7 +146,7 @@ private void cargaPropietario() {
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         JTpasswordCliente = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        JBgenerarPassword = new javax.swing.JButton();
         JBbaja_cliente = new javax.swing.JButton();
         JBalta_cliente = new javax.swing.JButton();
         JPdominios = new javax.swing.JPanel();
@@ -194,7 +194,12 @@ private void cargaPropietario() {
 
         jLabel6.setText("Contraseña:");
 
-        jButton1.setText("Generar contraseña aleatoria");
+        JBgenerarPassword.setText("Generar contraseña aleatoria");
+        JBgenerarPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBgenerarPasswordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -211,7 +216,7 @@ private void cargaPropietario() {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(JTpasswordCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
-                        .addComponent(jButton1))
+                        .addComponent(JBgenerarPassword))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JTdniCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -244,11 +249,10 @@ private void cargaPropietario() {
                     .addComponent(JTdniCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(JTpasswordCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JTpasswordCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBgenerarPassword)
+                    .addComponent(jLabel6))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -618,6 +622,14 @@ private void cargaPropietario() {
         }
     }//GEN-LAST:event_JBbajaDominioActionPerformed
 
+    private void JBgenerarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBgenerarPasswordActionPerformed
+        String passwordAleatoria = GenerarPassword.getPassword(
+		GenerarPassword.MINUSCULAS+
+		GenerarPassword.MAYUSCULAS+
+		GenerarPassword.NUMEROS,12);
+        JTpasswordCliente.setText(passwordAleatoria);
+    }//GEN-LAST:event_JBgenerarPasswordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -659,6 +671,7 @@ private void cargaPropietario() {
     private javax.swing.JButton JBalta_cliente;
     private javax.swing.JButton JBbajaDominio;
     private javax.swing.JButton JBbaja_cliente;
+    private javax.swing.JButton JBgenerarPassword;
     private javax.swing.JComboBox JCpropietarioDominio;
     private javax.swing.JLabel JLpaneldeadministracion;
     private javax.swing.JPanel JPclientes;
@@ -672,7 +685,6 @@ private void cargaPropietario() {
     private javax.swing.JTable JTdominios;
     private javax.swing.JTextField JTnombreCliente;
     private javax.swing.JTextField JTpasswordCliente;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

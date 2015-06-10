@@ -185,7 +185,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="JTpasswordCliente" min="-2" pref="148" max="-2" attributes="0"/>
                                   <EmptySpace min="38" pref="38" max="-2" attributes="0"/>
-                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="JBgenerarPassword" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -229,12 +229,10 @@
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JTpasswordCliente" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="JTpasswordCliente" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="JBgenerarPassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -280,10 +278,13 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="JTpasswordCliente">
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="JBgenerarPassword">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Generar contrase&#xf1;a aleatoria"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JBgenerarPasswordActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
