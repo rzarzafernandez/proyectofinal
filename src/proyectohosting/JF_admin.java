@@ -149,6 +149,7 @@ private void cargaPropietario() {
         JBgenerarPassword = new javax.swing.JButton();
         JBbaja_cliente = new javax.swing.JButton();
         JBalta_cliente = new javax.swing.JButton();
+        JCHpermisosCliente = new javax.swing.JCheckBox();
         JPdominios = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         JTdominios = new javax.swing.JTable();
@@ -272,6 +273,8 @@ private void cargaPropietario() {
             }
         });
 
+        JCHpermisosCliente.setText("Permisos administrador");
+
         javax.swing.GroupLayout JPclientesLayout = new javax.swing.GroupLayout(JPclientes);
         JPclientes.setLayout(JPclientesLayout);
         JPclientesLayout.setHorizontalGroup(
@@ -286,24 +289,31 @@ private void cargaPropietario() {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JBalta_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JBbaja_cliente))
-                        .addGap(64, 64, 64))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
+                                .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JBalta_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JBbaja_cliente))
+                                .addGap(64, 64, 64))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
+                                .addComponent(JCHpermisosCliente)
+                                .addGap(43, 43, 43))))))
         );
         JPclientesLayout.setVerticalGroup(
             JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPclientesLayout.createSequentialGroup()
                 .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPclientesLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(24, 24, 24)
+                        .addComponent(JCHpermisosCliente)
+                        .addGap(14, 14, 14)
                         .addComponent(JBalta_cliente)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JBbaja_cliente)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(JPclientesLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -512,14 +522,16 @@ private void cargaPropietario() {
         String fechaActualFormat = new SimpleDateFormat("yyyy-MM-dd").format(fechaActual);
 
         String nombre, apellidos, correo, DNI, fechaAlta, password;
+        int admin = 0;
         nombre = JTnombreCliente.getText();
         apellidos = JTapellidosCliente.getText();
         correo = JTcorreoCliente.getText();
         DNI = JTdniCliente.getText();
         fechaAlta = fechaActualFormat;
         password = JTpasswordCliente.getText();
+        if(JCHpermisosCliente.isSelected()) admin = 1;
 
-        String sql = "INSERT INTO clientes (nombre, apellidos, correo, DNI, fechaAlta, password) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO clientes (nombre, apellidos, correo, DNI, fechaAlta, password, admin) VALUES (?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = cn.prepareStatement(sql);
             pst.setString(1, nombre);
@@ -528,6 +540,7 @@ private void cargaPropietario() {
             pst.setString(4, DNI);
             pst.setString(5, fechaAlta);
             pst.setString(6, password);
+            pst.setInt(7, admin);
 
             int n = pst.executeUpdate();
 
@@ -539,6 +552,7 @@ private void cargaPropietario() {
             JTdniCliente.setText("");
             JTcorreoCliente.setText("");
             JTpasswordCliente.setText("");
+            JCHpermisosCliente.setSelected(false);
             cargaPropietario();
 
         } catch (SQLException ex) {
@@ -624,9 +638,9 @@ private void cargaPropietario() {
 
     private void JBgenerarPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBgenerarPasswordActionPerformed
         String passwordAleatoria = GenerarPassword.getPassword(
-		GenerarPassword.MINUSCULAS+
-		GenerarPassword.MAYUSCULAS+
-		GenerarPassword.NUMEROS,12);
+		GenerarPassword.minusculas+
+		GenerarPassword.mayusculas+
+		GenerarPassword.numeros,12);
         JTpasswordCliente.setText(passwordAleatoria);
     }//GEN-LAST:event_JBgenerarPasswordActionPerformed
 
@@ -672,6 +686,7 @@ private void cargaPropietario() {
     private javax.swing.JButton JBbajaDominio;
     private javax.swing.JButton JBbaja_cliente;
     private javax.swing.JButton JBgenerarPassword;
+    private javax.swing.JCheckBox JCHpermisosCliente;
     private javax.swing.JComboBox JCpropietarioDominio;
     private javax.swing.JLabel JLpaneldeadministracion;
     private javax.swing.JPanel JPclientes;

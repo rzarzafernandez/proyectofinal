@@ -12,26 +12,22 @@ package proyectohosting;
 public class GenerarPassword {
    
  
-	public static String NUMEROS = "0123456789";
- 
-	public static String MAYUSCULAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
- 
-	public static String MINUSCULAS = "abcdefghijklmnopqrstuvwxyz";
- 
-	 
-	 
-	public static String getPassword(int length) {
-		return getPassword(NUMEROS + MAYUSCULAS + MINUSCULAS, length);
+	public static String numeros = "0123456789"; 
+	public static String mayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+	public static String minusculas = "abcdefghijklmnopqrstuvwxyz";
+        
+ 	public static String getPassword(int length) {
+		return getPassword(numeros + mayusculas + minusculas, length);
 	}
  
 	public static String getPassword(String key, int length) {
-		String pswd = "";
+		String password = "";
  
 		for (int i = 0; i < length; i++) {
-			pswd+=(key.charAt((int)(Math.random() * key.length())));
+			password+=(key.charAt((int)(Math.random() * key.length())));
 		}
  
-		return pswd;
+		return password;
 	}
 }
 
