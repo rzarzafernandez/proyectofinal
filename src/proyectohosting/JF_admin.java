@@ -29,6 +29,7 @@ public class JF_admin extends javax.swing.JFrame {
         initComponents();
         actualizarTablaClientes("");
         actualizarTablaDominios("");
+        actualizarTablaHostings("");
         cargaPropietario();
         
     }
@@ -103,6 +104,49 @@ public final void actualizarTablaDominios(String valor){
         }
     }
 
+public final void actualizarTablaHostings(String valor){
+        DefaultTableModel modelo = (DefaultTableModel) JThostings.getModel();
+        String sql;
+        String[] registro = new String[6];
+        
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+        sql = "SELECT propietario, dominioPrincipal, talla, fechaAlta, fechaBaja FROM hostings "
+                + "WHERE CONCAT (propietario, ' ', dominioPrincipal, ' ', talla, ' ', fechaAlta, ' ', fechaBaja) LIKE '%"+valor+"%'";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            
+            //asigna un precio según la talla del hosting
+            while(rs.next()){
+            String talla = rs.getString("talla");
+            String tallaPrecio="0";
+            
+            switch (talla){
+                case "S": tallaPrecio="25";
+                    break;
+                case "M": tallaPrecio="60";
+                    break;
+                case "L": tallaPrecio="110";
+                    break;                                 
+            }
+                
+                registro[0] = rs.getString("dominioPrincipal");
+                registro[1] = tallaPrecio;
+                registro[2] = rs.getString("talla");
+                registro[3] = rs.getString("fechaAlta");
+                registro[4] = rs.getString("fechaBaja");
+                registro[5] = rs.getString("propietario");
+                
+                modelo.addRow(registro);
+            }
+            JThostings.setModel(modelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
 private void cargaPropietario() {
         try{
         Conectar mysql = new Conectar();
@@ -110,10 +154,12 @@ private void cargaPropietario() {
         Statement sent = cn.createStatement();
         ResultSet rs = sent.executeQuery("SELECT nombre, apellidos FROM clientes");
         this.JCpropietarioDominio.removeAllItems();
+        this.JCpropietarioHosting.removeAllItems();
         
         while( rs.next()){
             String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidos");
             this.JCpropietarioDominio.addItem(nombreCompleto);
+            this.JCpropietarioHosting.addItem(nombreCompleto);
         }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -162,7 +208,16 @@ private void cargaPropietario() {
         JBbajaDominio = new javax.swing.JButton();
         JPhostings = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        JThostings = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        JCdominioHosting = new javax.swing.JComboBox();
+        JCpropietarioHosting = new javax.swing.JComboBox();
+        JCtallaHosting = new javax.swing.JComboBox();
+        JBaltaHosting = new javax.swing.JButton();
+        JBbajaHosting = new javax.swing.JButton();
         JBdesconectar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -376,7 +431,7 @@ private void cargaPropietario() {
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(JCpropietarioDominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         JBaltaDominio.setBackground(new java.awt.Color(153, 255, 153));
@@ -433,15 +488,86 @@ private void cargaPropietario() {
 
         jTabbedPane1.addTab("Dominios", JPdominios);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        JThostings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Dominio principal", "Talla", "Precio", "Fecha de alta", "Fecha de baja", "Propietario"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(JThostings);
+        if (JThostings.getColumnModel().getColumnCount() > 0) {
+            JThostings.getColumnModel().getColumn(1).setMaxWidth(50);
+            JThostings.getColumnModel().getColumn(2).setMaxWidth(50);
+            JThostings.getColumnModel().getColumn(5).setMinWidth(200);
+        }
+
+        jLabel9.setText("Talla: ");
+
+        jLabel10.setText("Propietario:");
+
+        jLabel7.setText("Dominio principal:");
+
+        JCdominioHosting.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "dominio" }));
+
+        JCpropietarioHosting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JCpropietarioHostingActionPerformed(evt);
+            }
+        });
+
+        JCtallaHosting.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "S", "M", "L" }));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(66, 66, 66)
+                        .addComponent(JCtallaHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(JCpropietarioHosting, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JCdominioHosting, 0, 189, Short.MAX_VALUE))))
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JCtallaHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(JCpropietarioHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(JCdominioHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        JBaltaHosting.setBackground(new java.awt.Color(153, 255, 153));
+        JBaltaHosting.setText("Dar de alta");
+        JBaltaHosting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBaltaHostingActionPerformed(evt);
+            }
+        });
+
+        JBbajaHosting.setBackground(new java.awt.Color(255, 153, 153));
+        JBbajaHosting.setText("Dar de baja");
 
         javax.swing.GroupLayout JPhostingsLayout = new javax.swing.GroupLayout(JPhostings);
         JPhostings.setLayout(JPhostingsLayout);
@@ -451,12 +577,27 @@ private void cargaPropietario() {
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(JPhostingsLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86)
+                .addGroup(JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JBbajaHosting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JBaltaHosting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JPhostingsLayout.setVerticalGroup(
             JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPhostingsLayout.createSequentialGroup()
-                .addContainerGap(123, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(JPhostingsLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(JBaltaHosting)
+                        .addGap(18, 18, 18)
+                        .addComponent(JBbajaHosting)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -661,6 +802,57 @@ private void cargaPropietario() {
         new JF_login().setVisible(true);
     }//GEN-LAST:event_JBdesconectarActionPerformed
 
+    private void JCpropietarioHostingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCpropietarioHostingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JCpropietarioHostingActionPerformed
+
+    private void JBaltaHostingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBaltaHostingActionPerformed
+        //ALTA HOSTINGS
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+       
+        Calendar cal = Calendar.getInstance();
+        Date hoy = cal.getTime();
+        cal.add(Calendar.YEAR,1); //suma un año a la fecha
+        Date fechaCaducidad = cal.getTime();
+      
+        
+        String fechaActualFormat = new SimpleDateFormat("yyyy-MM-dd").format(hoy);
+        String fechaCaducidadFormat = new SimpleDateFormat("yyyy-MM-dd").format(fechaCaducidad);
+        
+
+        String propietario, dominio, talla, fechaAlta, fechaBaja;
+        propietario = JCpropietarioHosting.getSelectedItem().toString();
+        dominio = JCdominioHosting.getSelectedItem().toString();
+        talla = JCtallaHosting.getSelectedItem().toString();
+        fechaAlta = fechaActualFormat;
+        fechaBaja = fechaCaducidadFormat;
+        
+
+        String sql = "INSERT INTO hostings (propietario, dominioPrincipal, talla, fechaAlta, fechaBaja) VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, propietario);
+            pst.setString(2, dominio);
+            pst.setString(3, talla);
+            pst.setString(4, fechaAlta);
+            pst.setString(5, fechaBaja);
+            
+
+            int n = pst.executeUpdate();
+
+            //actualiza la tabla en el momento de añadir un nuevo participante
+            ((DefaultTableModel)JTdominios.getModel()).setRowCount(0);
+            actualizarTablaHostings("");
+           
+            
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+        
+    }//GEN-LAST:event_JBaltaHostingActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -699,13 +891,18 @@ private void cargaPropietario() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBaltaDominio;
+    private javax.swing.JButton JBaltaHosting;
     private javax.swing.JButton JBalta_cliente;
     private javax.swing.JButton JBbajaDominio;
+    private javax.swing.JButton JBbajaHosting;
     private javax.swing.JButton JBbaja_cliente;
     private javax.swing.JButton JBdesconectar;
     private javax.swing.JButton JBgenerarPassword;
     private javax.swing.JCheckBox JCHpermisosCliente;
+    private javax.swing.JComboBox JCdominioHosting;
     private javax.swing.JComboBox JCpropietarioDominio;
+    private javax.swing.JComboBox JCpropietarioHosting;
+    private javax.swing.JComboBox JCtallaHosting;
     private javax.swing.JLabel JLpaneldeadministracion;
     private javax.swing.JPanel JPclientes;
     private javax.swing.JPanel JPdominios;
@@ -716,21 +913,25 @@ private void cargaPropietario() {
     private javax.swing.JTextField JTdniCliente;
     private javax.swing.JTextField JTdominioDominio;
     private javax.swing.JTable JTdominios;
+    private javax.swing.JTable JThostings;
     private javax.swing.JTextField JTnombreCliente;
     private javax.swing.JTextField JTpasswordCliente;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable3;
     private javax.swing.JPanel paneldominio;
     // End of variables declaration//GEN-END:variables
 
