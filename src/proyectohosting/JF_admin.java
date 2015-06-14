@@ -32,6 +32,7 @@ public class JF_admin extends javax.swing.JFrame {
         actualizarTablaHostings("");
         cargaPropietario();
         
+        
     }
 public final void actualizarTablaClientes(String valor){
         DefaultTableModel modelo = (DefaultTableModel) JTclientes.getModel();
@@ -76,7 +77,7 @@ public final void actualizarTablaDominios(String valor){
             
             //asigna un precio según la extensión del dominio
             while(rs.next()){
-                String dominio = rs.getString("dominio");
+            String dominio = rs.getString("dominio");
             String extension = dominio.substring(dominio.length()-3);
             String  extensionPrecio="";
             switch (extension){
@@ -133,8 +134,8 @@ public final void actualizarTablaHostings(String valor){
             }
                 
                 registro[0] = rs.getString("dominioPrincipal");
-                registro[1] = tallaPrecio;
-                registro[2] = rs.getString("talla");
+                registro[1] = rs.getString("talla");
+                registro[2] = tallaPrecio;                
                 registro[3] = rs.getString("fechaAlta");
                 registro[4] = rs.getString("fechaBaja");
                 registro[5] = rs.getString("propietario");
@@ -160,6 +161,26 @@ private void cargaPropietario() {
             String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellidos");
             this.JCpropietarioDominio.addItem(nombreCompleto);
             this.JCpropietarioHosting.addItem(nombreCompleto);
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+private void cargaDominios() {
+        try{
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+        Statement sent = cn.createStatement();
+        ResultSet rs = sent.executeQuery("SELECT dominio, propietario FROM dominios");
+        this.JCdominioHosting.removeAllItems();
+        
+        
+        while( rs.next()){
+            String propietario = JCpropietarioHosting.getSelectedItem().toString();
+            if(propietario.equals(rs.getString("propietario"))){
+            String nombreCompleto = rs.getString("dominio");
+            this.JCdominioHosting.addItem(nombreCompleto);
+            }
         }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
@@ -216,6 +237,7 @@ private void cargaPropietario() {
         JCdominioHosting = new javax.swing.JComboBox();
         JCpropietarioHosting = new javax.swing.JComboBox();
         JCtallaHosting = new javax.swing.JComboBox();
+        JBcargarDominios = new javax.swing.JButton();
         JBaltaHosting = new javax.swing.JButton();
         JBbajaHosting = new javax.swing.JButton();
         JBdesconectar = new javax.swing.JButton();
@@ -337,22 +359,21 @@ private void cargaPropietario() {
             JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPclientesLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(JPclientesLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(JPclientesLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
                         .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
-                                .addGroup(JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(JBalta_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(JBbaja_cliente))
-                                .addGap(64, 64, 64))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
-                                .addComponent(JCHpermisosCliente)
-                                .addGap(43, 43, 43))))))
+                            .addComponent(JBalta_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBbaja_cliente))
+                        .addGap(64, 64, 64))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
+                        .addComponent(JCHpermisosCliente)
+                        .addGap(43, 43, 43))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         JPclientesLayout.setVerticalGroup(
             JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,7 +391,8 @@ private void cargaPropietario() {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
 
         jTabbedPane1.addTab("Clientes", JPclientes);
@@ -431,7 +453,7 @@ private void cargaPropietario() {
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(JCpropietarioDominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         JBaltaDominio.setBackground(new java.awt.Color(153, 255, 153));
@@ -461,16 +483,16 @@ private void cargaPropietario() {
                     .addGroup(JPdominiosLayout.createSequentialGroup()
                         .addGap(11, 11, 11)
                         .addComponent(paneldominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(JPdominiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JBbajaDominio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBaltaDominio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 167, Short.MAX_VALUE)))
+                        .addGap(40, 40, 40)
+                        .addGroup(JPdominiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(JBaltaDominio, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JBbajaDominio))
+                        .addGap(0, 145, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         JPdominiosLayout.setVerticalGroup(
             JPdominiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPdominiosLayout.createSequentialGroup()
+            .addGroup(JPdominiosLayout.createSequentialGroup()
                 .addGroup(JPdominiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPdominiosLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
@@ -478,12 +500,12 @@ private void cargaPropietario() {
                         .addGap(18, 18, 18)
                         .addComponent(JBbajaDominio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPdominiosLayout.createSequentialGroup()
+                    .addGroup(JPdominiosLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(paneldominio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addComponent(paneldominio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         jTabbedPane1.addTab("Dominios", JPdominios);
@@ -509,8 +531,6 @@ private void cargaPropietario() {
 
         jLabel7.setText("Dominio principal:");
 
-        JCdominioHosting.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "dominio" }));
-
         JCpropietarioHosting.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JCpropietarioHostingActionPerformed(evt);
@@ -518,6 +538,13 @@ private void cargaPropietario() {
         });
 
         JCtallaHosting.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "S", "M", "L" }));
+
+        JBcargarDominios.setText("Cargar dominos");
+        JBcargarDominios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBcargarDominiosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -527,18 +554,21 @@ private void cargaPropietario() {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
                         .addComponent(jLabel9)
-                        .addGap(66, 66, 66)
+                        .addGap(18, 18, 18)
                         .addComponent(JCtallaHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(JCpropietarioHosting, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JCdominioHosting, 0, 189, Short.MAX_VALUE))))
-                .addContainerGap(73, Short.MAX_VALUE))
+                            .addComponent(JCdominioHosting, 0, 189, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(JBcargarDominios)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -551,10 +581,11 @@ private void cargaPropietario() {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(JCpropietarioHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(JCdominioHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JCdominioHosting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBcargarDominios))
                 .addContainerGap())
         );
 
@@ -568,6 +599,11 @@ private void cargaPropietario() {
 
         JBbajaHosting.setBackground(new java.awt.Color(255, 153, 153));
         JBbajaHosting.setText("Dar de baja");
+        JBbajaHosting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBbajaHostingActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPhostingsLayout = new javax.swing.GroupLayout(JPhostings);
         JPhostings.setLayout(JPhostingsLayout);
@@ -580,10 +616,10 @@ private void cargaPropietario() {
             .addGroup(JPhostingsLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(86, 86, 86)
-                .addGroup(JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JBbajaHosting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JBaltaHosting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JBaltaHosting, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JBbajaHosting))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JPhostingsLayout.setVerticalGroup(
@@ -592,13 +628,13 @@ private void cargaPropietario() {
                 .addGroup(JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(JPhostingsLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
+                        .addGap(18, 18, 18)
                         .addComponent(JBaltaHosting)
                         .addGap(18, 18, 18)
                         .addComponent(JBbajaHosting)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64))
         );
 
         jTabbedPane1.addTab("Hostings", JPhostings);
@@ -827,7 +863,7 @@ private void cargaPropietario() {
         talla = JCtallaHosting.getSelectedItem().toString();
         fechaAlta = fechaActualFormat;
         fechaBaja = fechaCaducidadFormat;
-        
+        this.JCdominioHosting.removeAllItems();
 
         String sql = "INSERT INTO hostings (propietario, dominioPrincipal, talla, fechaAlta, fechaBaja) VALUES (?,?,?,?,?)";
         try {
@@ -842,7 +878,7 @@ private void cargaPropietario() {
             int n = pst.executeUpdate();
 
             //actualiza la tabla en el momento de añadir un nuevo participante
-            ((DefaultTableModel)JTdominios.getModel()).setRowCount(0);
+            ((DefaultTableModel)JThostings.getModel()).setRowCount(0);
             actualizarTablaHostings("");
            
             
@@ -852,6 +888,33 @@ private void cargaPropietario() {
         }
         
     }//GEN-LAST:event_JBaltaHostingActionPerformed
+
+    private void JBcargarDominiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBcargarDominiosActionPerformed
+        cargaDominios();
+    }//GEN-LAST:event_JBcargarDominiosActionPerformed
+
+    private void JBbajaHostingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBbajaHostingActionPerformed
+       //BAJA DOMINIOS
+        Conectar mysql = new Conectar();
+        Connection cn = mysql.conexSQL();
+
+        int fila = JThostings.getSelectedRow();
+        Object dominioPrincipal = JThostings.getValueAt(fila,0).toString();
+        String sql = "DELETE FROM hostings WHERE dominioPrincipal='"+dominioPrincipal+"'";
+
+        try{
+            PreparedStatement pst = cn.prepareStatement(sql);
+
+            pst.executeUpdate();
+
+            //actualiza la tabla en el momento de añadir un nuevo participante
+            ((DefaultTableModel)JThostings.getModel()).setRowCount(0);
+            actualizarTablaHostings("");
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }//GEN-LAST:event_JBbajaHostingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -896,6 +959,7 @@ private void cargaPropietario() {
     private javax.swing.JButton JBbajaDominio;
     private javax.swing.JButton JBbajaHosting;
     private javax.swing.JButton JBbaja_cliente;
+    private javax.swing.JButton JBcargarDominios;
     private javax.swing.JButton JBdesconectar;
     private javax.swing.JButton JBgenerarPassword;
     private javax.swing.JCheckBox JCHpermisosCliente;
