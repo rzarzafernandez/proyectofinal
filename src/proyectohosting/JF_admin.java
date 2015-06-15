@@ -217,6 +217,7 @@ private void cargaDominios() {
         JBbaja_cliente = new javax.swing.JButton();
         JBalta_cliente = new javax.swing.JButton();
         JCHpermisosCliente = new javax.swing.JCheckBox();
+        JBexportarClientes = new javax.swing.JButton();
         JPdominios = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         JTdominios = new javax.swing.JTable();
@@ -227,6 +228,7 @@ private void cargaDominios() {
         jLabel8 = new javax.swing.JLabel();
         JBaltaDominio = new javax.swing.JButton();
         JBbajaDominio = new javax.swing.JButton();
+        JBexportarDominios = new javax.swing.JButton();
         JPhostings = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         JThostings = new javax.swing.JTable();
@@ -240,6 +242,7 @@ private void cargaDominios() {
         JBcargarDominios = new javax.swing.JButton();
         JBaltaHosting = new javax.swing.JButton();
         JBbajaHosting = new javax.swing.JButton();
+        JBexportarHostings = new javax.swing.JButton();
         JBdesconectar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -332,7 +335,7 @@ private void cargaDominios() {
                     .addComponent(JTpasswordCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JBgenerarPassword)
                     .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         JBbaja_cliente.setBackground(new java.awt.Color(255, 153, 153));
@@ -352,6 +355,13 @@ private void cargaDominios() {
         });
 
         JCHpermisosCliente.setText("Permisos administrador");
+
+        JBexportarClientes.setText("Exportar datos");
+        JBexportarClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBexportarClientesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPclientesLayout = new javax.swing.GroupLayout(JPclientes);
         JPclientes.setLayout(JPclientesLayout);
@@ -374,6 +384,10 @@ private void cargaDominios() {
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPclientesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JBexportarClientes)
+                .addGap(50, 50, 50))
         );
         JPclientesLayout.setVerticalGroup(
             JPclientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,9 +404,11 @@ private void cargaDominios() {
                     .addGroup(JPclientesLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addComponent(JBexportarClientes)
+                .addGap(14, 14, 14))
         );
 
         jTabbedPane1.addTab("Clientes", JPclientes);
@@ -453,7 +469,7 @@ private void cargaDominios() {
                 .addGroup(paneldominioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(JCpropietarioDominio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         JBaltaDominio.setBackground(new java.awt.Color(153, 255, 153));
@@ -469,6 +485,13 @@ private void cargaDominios() {
         JBbajaDominio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBbajaDominioActionPerformed(evt);
+            }
+        });
+
+        JBexportarDominios.setText("Exportar datos");
+        JBexportarDominios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBexportarDominiosActionPerformed(evt);
             }
         });
 
@@ -489,6 +512,10 @@ private void cargaDominios() {
                             .addComponent(JBbajaDominio))
                         .addGap(0, 145, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPdominiosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JBexportarDominios)
+                .addGap(38, 38, 38))
         );
         JPdominiosLayout.setVerticalGroup(
             JPdominiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -498,14 +525,15 @@ private void cargaDominios() {
                         .addGap(23, 23, 23)
                         .addComponent(JBaltaDominio)
                         .addGap(18, 18, 18)
-                        .addComponent(JBbajaDominio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(JBbajaDominio))
                     .addGroup(JPdominiosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(paneldominio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JBexportarDominios)
+                .addGap(22, 22, 22))
         );
 
         jTabbedPane1.addTab("Dominios", JPdominios);
@@ -605,6 +633,13 @@ private void cargaDominios() {
             }
         });
 
+        JBexportarHostings.setText("Exportar datos");
+        JBexportarHostings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JBexportarHostingsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPhostingsLayout = new javax.swing.GroupLayout(JPhostings);
         JPhostings.setLayout(JPhostingsLayout);
         JPhostingsLayout.setHorizontalGroup(
@@ -621,6 +656,10 @@ private void cargaDominios() {
                     .addComponent(JBaltaHosting, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JBbajaHosting))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPhostingsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JBexportarHostings)
+                .addGap(40, 40, 40))
         );
         JPhostingsLayout.setVerticalGroup(
             JPhostingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -633,8 +672,10 @@ private void cargaDominios() {
                         .addGap(18, 18, 18)
                         .addComponent(JBbajaHosting)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JBexportarHostings)
+                .addGap(42, 42, 42))
         );
 
         jTabbedPane1.addTab("Hostings", JPhostings);
@@ -667,9 +708,8 @@ private void cargaDominios() {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JLpaneldeadministracion, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JBdesconectar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, Short.MAX_VALUE))
         );
 
         pack();
@@ -916,6 +956,21 @@ private void cargaDominios() {
         }
     }//GEN-LAST:event_JBbajaHostingActionPerformed
 
+    private void JBexportarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBexportarClientesActionPerformed
+         Exportar exp = new Exportar();
+         exp.exportarClientes("");
+    }//GEN-LAST:event_JBexportarClientesActionPerformed
+
+    private void JBexportarDominiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBexportarDominiosActionPerformed
+        Exportar exp = new Exportar();
+        exp.exportarDominios("");
+    }//GEN-LAST:event_JBexportarDominiosActionPerformed
+
+    private void JBexportarHostingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBexportarHostingsActionPerformed
+       Exportar exp = new Exportar();
+       exp.exportarHostings("");
+    }//GEN-LAST:event_JBexportarHostingsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -961,6 +1016,9 @@ private void cargaDominios() {
     private javax.swing.JButton JBbaja_cliente;
     private javax.swing.JButton JBcargarDominios;
     private javax.swing.JButton JBdesconectar;
+    private javax.swing.JButton JBexportarClientes;
+    private javax.swing.JButton JBexportarDominios;
+    private javax.swing.JButton JBexportarHostings;
     private javax.swing.JButton JBgenerarPassword;
     private javax.swing.JCheckBox JCHpermisosCliente;
     private javax.swing.JComboBox JCdominioHosting;
