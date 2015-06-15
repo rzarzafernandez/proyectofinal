@@ -5,7 +5,6 @@
  */
 package proyectohosting;
 
-import java.awt.Component;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -16,12 +15,14 @@ import javax.swing.JOptionPane;
  * @author Zarza
  */
 public class JF_login extends javax.swing.JFrame {
-
+    
+    public static String correoCliente = "";
     /**
      * Creates new form JF_login
      */
     public JF_login() {
         initComponents();
+        
     }
 
     /**
@@ -41,6 +42,7 @@ public class JF_login extends javax.swing.JFrame {
         JTcontraseña = new javax.swing.JPasswordField();
         JBbuscador = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,9 +63,9 @@ public class JF_login extends javax.swing.JFrame {
             JPcontainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPcontainerLayout.createSequentialGroup()
                 .addGap(77, 77, 77)
-                .addGroup(JPcontainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JLcorreo)
-                    .addComponent(JRcontraseña))
+                .addGroup(JPcontainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JRcontraseña)
+                    .addComponent(JLcorreo))
                 .addGap(18, 18, 18)
                 .addGroup(JPcontainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JBlogin)
@@ -88,7 +90,7 @@ public class JF_login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        JBbuscador.setText("Buscador de dominios");
+        JBbuscador.setText("Herramienta WHOIS");
         JBbuscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBbuscadorActionPerformed(evt);
@@ -96,35 +98,44 @@ public class JF_login extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Linkin' Unit Manager");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectohosting/LUproyect.png"))); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("Manager");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JPcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(69, 69, 69)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(JPcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(JBbuscador))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(JBbuscador)
-                .addGap(131, 131, 131))
+                .addComponent(jLabel2)
+                .addGap(158, 158, 158))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(JPcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
+                .addGap(53, 53, 53)
                 .addComponent(JBbuscador)
-                .addGap(26, 26, 26))
+                .addGap(41, 41, 41))
         );
 
         pack();
@@ -132,7 +143,7 @@ public class JF_login extends javax.swing.JFrame {
 
     private void JBbuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBbuscadorActionPerformed
           this.dispose();
-          new JF_buscador().setVisible(true);
+          new JF_whois().setVisible(true);
     }//GEN-LAST:event_JBbuscadorActionPerformed
 
     private void JBloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBloginActionPerformed
@@ -163,8 +174,9 @@ public class JF_login extends javax.swing.JFrame {
                new JF_admin().setVisible(true);           
            }
            if(password.equals(passwordBD)&& permisosAdmin == 0){
+               JF_login.correoCliente = correo;
                this.dispose();
-               new JF_buscador().setVisible(true);
+               new JF_clientes().setVisible(true);
            }
            if(!(password.equals(passwordBD))){
                JOptionPane.showMessageDialog(pane,"Datos incorrectos");
@@ -223,5 +235,6 @@ public class JF_login extends javax.swing.JFrame {
     private javax.swing.JPasswordField JTcontraseña;
     private javax.swing.JTextField JTcorreo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
